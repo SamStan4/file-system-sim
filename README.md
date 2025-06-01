@@ -22,7 +22,7 @@ mvn clean install
 ```
 
 ### Run the application
-bash```
+```bash
 mvn exec:java -Dexec.mainClass="io.github.samstan4.App"
 ```
 
