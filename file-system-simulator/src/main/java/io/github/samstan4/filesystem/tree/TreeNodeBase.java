@@ -58,6 +58,10 @@ public abstract class TreeNodeBase {
     return this.rightSiblingLink;
   }
 
+  public ZonedDateTime getTimeCreated() {
+    return this.timeCreated;
+  }
+
   public String[] getPath() {
     List<String> pathList = new ArrayList<String>();
     for (TreeNodeBase curNode = this; curNode != null; curNode = curNode.parentLink) {
