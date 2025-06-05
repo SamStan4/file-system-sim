@@ -26,6 +26,9 @@ public class TreeNodeFactory {
         final FileType typeKey = subTypeInstance.getType();
         final Constructor<? extends TreeNodeBase> subTypeNameConstructor = subType.getDeclaredConstructor(String.class);
         final Constructor<? extends TreeNodeBase> subTypeNameTimeConstructor = subType.getDeclaredConstructor(String.class, ZonedDateTime.class);
+        if (TreeNodeFactory.nameConstructorMap.containsKey(typeKey) || TreeNodeFactory.nameTimeConstructorMap.containsKey(typeKey)) {
+          System.err.println("[FATAL ERROR] duplicate file key node key found: " + typeKey.name());
+        }
         TreeNodeFactory.nameConstructorMap.put(typeKey, subTypeNameConstructor);
         TreeNodeFactory.nameTimeConstructorMap.put(typeKey, subTypeNameTimeConstructor);
       } catch (Exception e) {
