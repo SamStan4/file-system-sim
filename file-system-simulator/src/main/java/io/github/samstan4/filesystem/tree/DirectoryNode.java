@@ -7,6 +7,8 @@ public class DirectoryNode extends TreeNodeBase {
   // Only a directory can have children
   TreeNodeBase firstChildLink;
 
+  // MARK: constructors
+
   public DirectoryNode(final String newName) {
     super(newName);
     this.firstChildLink = null;
@@ -16,6 +18,18 @@ public class DirectoryNode extends TreeNodeBase {
     super(newName, newTime);
     this.firstChildLink = null;
   }
+
+  // MARK: setters
+
+  public boolean addChild(final String newChildName, final FileType newType) {
+    if (this.hasChild(newChildName)) {
+      return false;
+    }
+    
+    return true;
+  }
+
+  // MARK: getters
 
   public TreeNodeBase getChild(final String childName) {
     TreeNodeBase curChild = this.firstChildLink;
@@ -30,9 +44,11 @@ public class DirectoryNode extends TreeNodeBase {
   public boolean hasChild(final String childName) {
     return this.getChild(childName) != null;
   }
+
+  // MARK: overrides
   
   @Override
-  public String getType() {
-    return "dir";
+  public FileType getType() {
+    return FileType.DIRECTORY;
   }
 }

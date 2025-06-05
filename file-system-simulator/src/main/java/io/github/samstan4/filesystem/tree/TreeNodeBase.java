@@ -73,12 +73,12 @@ public abstract class TreeNodeBase {
 
   // MARK: abstracts
 
-  public abstract String getType();
+  public abstract FileType getType();
 
   // MARK: overrides
 
   @Override
   public String toString() {
-    return String.format("%s-%s", this.getType(), this.name);
+    return String.format("%s-%s", this.getType().toString(), this.name);
   }
 }
