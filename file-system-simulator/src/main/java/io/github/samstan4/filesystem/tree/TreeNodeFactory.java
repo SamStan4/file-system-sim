@@ -4,11 +4,13 @@ import org.reflections.Reflections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.lang.reflect.Constructor;
 import java.time.ZonedDateTime;
 
 public class TreeNodeFactory {
-  
-  private static final Map<String, Class<? extends TreeNodeBase>> registeredNodeTypes = new HashMap<>();
+
+  private static final Map<FileType, Constructor<? extends TreeNodeBase>> nameConstructorMap = new HashMap<>();
+  private static final Map<FileType, Constructor<? extends TreeNodeBase>> nameTimeConstructorMap = new HashMap<>();
 
   static {
     TreeNodeFactory.discoverAndRegisterNodeSubTypes();
@@ -18,41 +20,44 @@ public class TreeNodeFactory {
     final String packageName = TreeNodeBase.class.getPackageName();
     Reflections reflections = new Reflections(packageName);
     Set<Class<? extends TreeNodeBase>> subTypes = reflections.getSubTypesOf(TreeNodeBase.class);
-    for (Class<? extends TreeNodeBase> subClass : subTypes) {
+    for (Class<? extends TreeNodeBase> subType : subTypes) {
       try {
-        TreeNodeBase instance = subClass.getDeclaredConstructor(String.class).newInstance("");
-        final String typeKey = instance.getType().name().toLowerCase();
-        TreeNodeFactory.registeredNodeTypes.put(typeKey, subClass);
+        TreeNodeBase subTypeInstance = subType.getDeclaredConstructor(String.class).newInstance("");
+        final FileType typeKey = subTypeInstance.getType();
+        final Constructor<? extends TreeNodeBase> subTypeNameConstructor = subType.getDeclaredConstructor(String.class);
+        final Constructor<? extends TreeNodeBase> subTypeNameTimeConstructor = subType.getDeclaredConstructor(String.class, ZonedDateTime.class);
+        TreeNodeFactory.nameConstructorMap.put(typeKey, subTypeNameConstructor);
+        TreeNodeFactory.nameTimeConstructorMap.put(typeKey, subTypeNameTimeConstructor);
       } catch (Exception e) {
-        System.err.println("[FATAL ERROR] unable to register class: " + subClass.getName() + ", " + e);
+        System.err.println("[FATAL ERROR] unable to register class: " + subType.getName() + ", " + e);
       }
     }
   }
 
   public static TreeNodeBase createNode(final FileType newType, final String newName) {
-    final String newTypeKey = newType.name().toLowerCase();
-    Class<? extends TreeNodeBase> targetClass = TreeNodeFactory.registeredNodeTypes.get(newTypeKey);
-    if (targetClass == null) {
+    Constructor<? extends TreeNodeBase> targetTypeConstructor = TreeNodeFactory.nameConstructorMap.get(newType);
+    if (targetTypeConstructor == null) {
+      System.err.println("[CRITICAL ERROR] unregistered type: " + newType.name().toLowerCase());
       return null;
     }
     try {
-      return targetClass.getDeclaredConstructor(String.class).newInstance(newName);
+      return targetTypeConstructor.newInstance(newName);
     } catch (Exception e) {
-      System.err.println("[CRITICAL ERROR] unable to create node of type: " + newTypeKey + ", " + e);
+      System.err.println("[CRITICAL ERROR] unable to create node of type: " + newType.name().toLowerCase() + ", " + e);
       return null;
     }
   }
 
   public static TreeNodeBase createNode(final FileType newType, final String newName, final ZonedDateTime newTime) {
-    final String newTypeKey = newType.name().toLowerCase();
-    Class<? extends TreeNodeBase> targetClass = TreeNodeFactory.registeredNodeTypes.get(newTypeKey);
-    if (targetClass == null) {
+    Constructor<? extends TreeNodeBase> targetTypeConstructor = TreeNodeFactory.nameTimeConstructorMap.get(newType);
+    if (targetTypeConstructor == null) {
+      System.err.println("[CRITICAL ERROR] unregistered type: " + newType.name().toLowerCase());
       return null;
     }
     try {
-      return targetClass.getDeclaredConstructor(String.class, ZonedDateTime.class).newInstance(newName, newTime);
+      return targetTypeConstructor.newInstance(newName, newTime);
     } catch (Exception e) {
-      System.err.println("[CRITICAL ERROR] unable to create node of type: " + newTypeKey + ", " + e);
+      System.err.println("[CRITICAL ERROR] unable to create node of type: " + newType.name().toLowerCase() + ", " + e);
       return null;
     }
   }
