@@ -26,7 +26,6 @@ public class DirectoryNodeTest {
     final FileType testChildType = FileType.FILE;
     final DirectoryNode testDirNode = new DirectoryNode(testDirName);
 
-
     // add two children
     assertTrue(testDirNode.addChild(testChildType, testChildNameOne));    
     assertTrue(testDirNode.addChild(testChildType, testChildNameTwo));
@@ -34,5 +33,15 @@ public class DirectoryNodeTest {
     // attempt to add duplicate
     assertFalse(testDirNode.addChild(testChildType, testChildNameOne));
     assertFalse(testDirNode.addChild(testChildType, testChildNameTwo));
+
+    testDirNode.removeChild(testChildNameOne);
+
+    assertFalse(testDirNode.hasChild(testChildNameOne));
+
+    testDirNode.removeChild(testChildNameTwo);
+
+    assertFalse(testDirNode.hasChild(testChildNameTwo));
+
+    assertTrue(testDirNode.addChild(testChildType, testChildNameOne));
   }
 }

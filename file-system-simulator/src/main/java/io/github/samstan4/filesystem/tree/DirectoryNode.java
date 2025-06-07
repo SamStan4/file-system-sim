@@ -79,6 +79,25 @@ public class DirectoryNode extends TreeNodeBase {
     return this.getChild(childName) != null;
   }
 
+  // MARK: other api
+
+  public void removeChild(final String childName) {
+    TreeNodeBase curChildNode = this.firstChildLink;
+    TreeNodeBase prevChildNode = null;
+    while (curChildNode != null) {
+      if (curChildNode.getName() == childName) {
+        if (prevChildNode == null) {
+          this.firstChildLink = curChildNode.getRightSiblingLink();
+        } else {
+          prevChildNode.setRightSiblingLink(curChildNode.getRightSiblingLink());
+        }
+        return;
+      }
+      prevChildNode = curChildNode;
+      curChildNode = curChildNode.getRightSiblingLink();
+    }
+  }
+
   // MARK: overrides
   
   @Override
