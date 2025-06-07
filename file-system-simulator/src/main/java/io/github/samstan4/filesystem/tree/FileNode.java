@@ -36,6 +36,16 @@ public class FileNode extends TreeNodeBase {
 
   @Override
   public Element toXml(final Document document) {
-    throw new Error("not implemented");
+    
+    final Element newFileXmlElement = document.createElement(this.getTypeNiceString());
+    final Element contentXmlElement = document.createElement("content");
+
+    newFileXmlElement.setAttribute("name", this.getName());
+    newFileXmlElement.setAttribute("timeCreated", this.getTimeCreatedString());
+
+    contentXmlElement.appendChild(document.createCDATASection(this.getFileContents()));
+    newFileXmlElement.appendChild(contentXmlElement);
+
+    return newFileXmlElement;
   }
 }

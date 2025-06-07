@@ -66,6 +66,10 @@ public abstract class TreeNodeBase {
     return this.timeCreated;
   }
 
+  public String getTimeCreatedString() {
+    return this.timeCreated.toString();
+  }
+
   public String[] getPath() {
     List<String> pathList = new ArrayList<String>();
     for (TreeNodeBase curNode = this; curNode != null; curNode = curNode.parentLink) {

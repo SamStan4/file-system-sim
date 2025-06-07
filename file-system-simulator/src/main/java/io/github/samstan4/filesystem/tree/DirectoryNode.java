@@ -123,19 +123,15 @@ public class DirectoryNode extends TreeNodeBase {
 
   @Override
   public Element toXml(final Document document) {
-    // Element newDirElement = doc.createElement(this.getType().toString().toLowerCase());
-    // newDirElement.setAttribute("name", this.getName());
-    // newDirElement.setAttribute("created", this.getTimeCreated().toString());
-    // TreeNodeBase curChild = this.firstChildLink;
-    // while (curChild != null) {
-    //   Element curChildElement = curChild.toXML(doc);
-    //   newDirElement.appendChild(curChildElement);
-    //   curChild = curChild.getRightSiblingLink();
-    // }
-    // return newDirElement;
-
-    // Element newDirXmlElement = doc.createElement(this.ge)
-
-    throw new Error("not implemented");
+    final Element newDirXmlElement = document.createElement(this.getTypeNiceString());
+    newDirXmlElement.setAttribute("name", this.getName());
+    newDirXmlElement.setAttribute("timeCreated", this.getTimeCreatedString());
+    TreeNodeBase curChild = this.getFirstChild();
+    while (curChild != null) {
+      final Element newChildXmlElement = curChild.toXml(document);
+      newDirXmlElement.appendChild(newChildXmlElement);
+      curChild = curChild.getRightSiblingLink();
+    }
+    return newDirXmlElement;
   }
 }
