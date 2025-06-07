@@ -1,7 +1,6 @@
 package io.github.samstan4.filesystem.tree;
 
 import java.time.ZonedDateTime;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -26,12 +25,17 @@ public class FileNode extends TreeNodeBase {
   }
 
   @Override
+  public String getTypeNiceString() {
+    return FileType.FILE.toString().toLowerCase();
+  }
+
+  @Override
   public FileType getType() {
     return FileType.FILE;
   }
 
   @Override
-  public Element toXML(Document doc) {
+  public Element toXml(final Document document) {
     throw new Error("not implemented");
   }
 }

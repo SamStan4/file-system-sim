@@ -81,9 +81,11 @@ public abstract class TreeNodeBase {
 
   // MARK: abstracts
 
+  public abstract String getTypeNiceString();
+
   public abstract FileType getType();
 
-  public abstract Element toXML(Document doc);
+  public abstract Element toXml(final Document document);
 
   // MARK: overrides
 

@@ -67,6 +67,14 @@ public class DirectoryNode extends TreeNodeBase {
 
   // MARK: getters
 
+  /**
+   * Simple getter for the first chid.
+   * @return The first child that the node has.
+   */
+  public TreeNodeBase getFirstChild() {
+    return this.firstChildLink;
+  }
+
   public TreeNodeBase getChild(final String childName) {
     TreeNodeBase curChild = this.firstChildLink;
     while (curChild != null) {
@@ -102,6 +110,11 @@ public class DirectoryNode extends TreeNodeBase {
   }
 
   // MARK: overrides
+
+  @Override
+  public String getTypeNiceString() {
+    return FileType.DIRECTORY.toString().toLowerCase();
+  }
   
   @Override
   public FileType getType() {
@@ -109,7 +122,20 @@ public class DirectoryNode extends TreeNodeBase {
   }
 
   @Override
-  public Element toXML(Document doc) {
+  public Element toXml(final Document document) {
+    // Element newDirElement = doc.createElement(this.getType().toString().toLowerCase());
+    // newDirElement.setAttribute("name", this.getName());
+    // newDirElement.setAttribute("created", this.getTimeCreated().toString());
+    // TreeNodeBase curChild = this.firstChildLink;
+    // while (curChild != null) {
+    //   Element curChildElement = curChild.toXML(doc);
+    //   newDirElement.appendChild(curChildElement);
+    //   curChild = curChild.getRightSiblingLink();
+    // }
+    // return newDirElement;
+
+    // Element newDirXmlElement = doc.createElement(this.ge)
+
     throw new Error("not implemented");
   }
 }
