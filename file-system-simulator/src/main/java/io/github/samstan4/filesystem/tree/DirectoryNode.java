@@ -21,12 +21,45 @@ public class DirectoryNode extends TreeNodeBase {
 
   // MARK: setters
 
-  public boolean addChild(final String newChildName, final FileType newType) {
+  /**
+   * @param newChild the node that we are inserting into the tree
+   * @apiNote this should only ever be called if it has already been verified that this results in no duplicates.
+   */
+  private boolean addChild(final TreeNodeBase newChild) {
+    if (newChild == null) {
+      return false;
+    }
+    newChild.setRightSiblingLink(this.firstChildLink);
+    newChild.setParentLink(this);
+    this.firstChildLink = newChild;
+    return true;
+  }
+
+  /**
+   * @apiNote adds child to the current node. Does an insert at front
+   * @param newType file/dir
+   * @param newChildName name of the file/dir
+   * @return true or false depending on wether or not the node was inserted
+   */
+  public boolean addChild(final FileType newType, final String newChildName) {
     if (this.hasChild(newChildName)) {
       return false;
     }
-    
-    return true;
+    return this.addChild(TreeNodeFactory.createNode(newType, newChildName));
+  }
+
+  /**
+   * @apiNote adds child to the current node. Does an insert at front
+   * @param newType file/dir
+   * @param newChildName name of the file/dir
+   * @param newChildTime the time that the child was created
+   * @return true or false depending on wether or not the node was inserted
+   */
+  public boolean addChild(final FileType newType, final String newChildName, final ZonedDateTime newChildTime) {
+    if (this.hasChild(newChildName)) {
+      return false;
+    }
+    return this.addChild(TreeNodeFactory.createNode(newType, newChildName, newChildTime));
   }
 
   // MARK: getters
@@ -37,6 +70,7 @@ public class DirectoryNode extends TreeNodeBase {
       if (childName == curChild.name) {
         return curChild;
       }
+      curChild = curChild.getRightSiblingLink();
     }
     return curChild;
   }
