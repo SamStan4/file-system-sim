@@ -1,6 +1,9 @@
 package io.github.samstan4.filesystem.tree;
 
 import java.time.ZonedDateTime;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 
 public class DirectoryNode extends TreeNodeBase {
 
@@ -103,5 +106,10 @@ public class DirectoryNode extends TreeNodeBase {
   @Override
   public FileType getType() {
     return FileType.DIRECTORY;
+  }
+
+  @Override
+  public Element toXML(Document doc) {
+    throw new Error("not implemented");
   }
 }

@@ -2,6 +2,10 @@ package io.github.samstan4.filesystem.tree;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.util.Collections;
 import java.time.ZonedDateTime;
 
@@ -78,6 +82,8 @@ public abstract class TreeNodeBase {
   // MARK: abstracts
 
   public abstract FileType getType();
+
+  public abstract Element toXML(Document doc);
 
   // MARK: overrides
 
